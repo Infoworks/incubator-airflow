@@ -746,6 +746,11 @@ def webserver(args):
 
         gunicorn_master_proc = subprocess.Popen(run_args)
 
+        if args.daemon:
+            print("Webserver started in daemon mode. Ending this process.")
+            time.sleep(3)
+            sys.exit(0)
+
         def kill_proc(dummy_signum, dummy_frame):
             gunicorn_master_proc.terminate()
             gunicorn_master_proc.wait()
