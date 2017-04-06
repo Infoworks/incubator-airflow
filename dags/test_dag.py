@@ -14,17 +14,17 @@
 
 from airflow import DAG
 from airflow.operators.dummy_operator import DummyOperator
-from datetime import datetime
+from datetime import datetime, timedelta
 
 now = datetime.now()
-now_to_the_hour = now.replace(hour=now.time().hour-3 , minute=0, second=0, microsecond=0)
+now_to_the_hour = (now - timedelta(0, 0, 0, 0, 0, 3)).replace(minute=0, second=0, microsecond=0)
 START_DATE = now_to_the_hour 
 DAG_NAME = 'test_dag_v1'
 
 default_args = {
     'owner': 'airflow',
     'depends_on_past': True,
-    'start_date': START_DATE,
+    'start_date': airflow.utils.dates.days_ago(2)
 }
 dag = DAG(DAG_NAME, schedule_interval='*/10 * * * *', default_args=default_args)
 
